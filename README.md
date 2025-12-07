@@ -1,4 +1,4 @@
-# Meme Bot Frontend
+# Meme Bot Frontend (Webpage)
 
 2025 Golang Final Project
 
