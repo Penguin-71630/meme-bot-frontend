@@ -1,5 +1,7 @@
+import type { Alias } from '../types';
+
 interface SidebarProps {
-  aliases: string[];
+  aliases: Alias[];
   currentPage: number;
   totalPages: number;
 }
@@ -23,9 +25,10 @@ export default function Sidebar({
         </div>
         <ul className="space-y-1">
           {aliases.map((alias) => (
-            <li key={alias}>
+            <li key={alias.id}>
               <div className="w-full text-left px-3 py-2 rounded-lg bg-blue-50 text-blue-700">
-                {alias}
+                <span className="text-xs text-blue-500 mr-2">#{alias.id}</span>
+                {alias.name}
               </div>
             </li>
           ))}

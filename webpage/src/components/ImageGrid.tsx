@@ -1,30 +1,32 @@
-import type { Image } from '../types';
+import type { Image, Alias } from '../types';
+import { api } from '../api';
 
 interface ImageGridProps {
   images: Image[];
-  aliases: string[];
+  aliases: Alias[];
   onImageClick: (image: Image) => void;
 }
 
 export default function ImageGrid({ images, aliases, onImageClick }: ImageGridProps) {
+  // Create a map of alias ID to alias name
+  const aliasMap = new Map(aliases.map(a => [a.id, a.name]));
+  
   // Group images by alias
   const groupedImages = images.reduce((acc, image) => {
-    if (image.aliases.length === 0) {
+    if (image.aliasesIds.length === 0) {
       if (!acc['__no_alias__']) acc['__no_alias__'] = [];
       acc['__no_alias__'].push(image);
     } else {
-      image.aliases.forEach((alias) => {
-        if (!acc[alias]) acc[alias] = [];
-        acc[alias].push(image);
+      image.aliasesIds.forEach((aliasId) => {
+        const aliasName = aliasMap.get(aliasId) || `Alias #${aliasId}`;
+        if (!acc[aliasName]) acc[aliasName] = [];
+        acc[aliasName].push(image);
       });
     }
     return acc;
   }, {} as Record<string, Image[]>);
 
-  // Filter to only show aliases on current page
-  const filteredGroups = Object.entries(groupedImages).filter(([alias]) =>
-    aliases.includes(alias) || alias === '__no_alias__'
-  );
+  const filteredGroups = Object.entries(groupedImages);
 
   return (
     <div className="p-6 space-y-8">
@@ -41,8 +43,8 @@ export default function ImageGrid({ images, aliases, onImageClick }: ImageGridPr
                 className="aspect-square rounded-lg overflow-hidden bg-gray-100 hover:ring-2 hover:ring-blue-500 transition-all"
               >
                 <img
-                  src={`http://localhost:8080${image.url}`}
-                  alt={image.aliases.join(', ')}
+                  src={api.getImageUrl(image.id, image.extension)}
+                  alt={`Image ${image.id}`}
                   className="w-full h-full object-cover"
                 />
               </button>

@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import type { Image } from '../types';
+import { api } from '../api';
 
 interface ImageModalProps {
   image: Image;
   onClose: () => void;
-  onSave: (imageId: string, aliases: string[]) => Promise<void>;
-  onDelete: (imageId: string) => Promise<void>;
+  onSave: (imageId: number, aliases: string[]) => Promise<void>;
+  onDelete: (imageId: number) => Promise<void>;
 }
 
 export default function ImageModal({
@@ -14,12 +15,20 @@ export default function ImageModal({
   onSave,
   onDelete,
 }: ImageModalProps) {
-  const [aliases, setAliases] = useState<string[]>(image.aliases);
+  const [aliases, setAliases] = useState<string[]>([]);
   const [newAlias, setNewAlias] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const [allAliases, setAllAliases] = useState<{id: number, name: string}[]>([]);
 
   useEffect(() => {
-    setAliases(image.aliases);
+    // Load all aliases and map image's aliasesIds to names
+    api.getAllAliases().then(allAliasesData => {
+      setAllAliases(allAliasesData);
+      const aliasNames = image.aliasesIds
+        .map(id => allAliasesData.find(a => a.id === id)?.name)
+        .filter((name): name is string => name !== undefined);
+      setAliases(aliasNames);
+    });
   }, [image]);
 
   const handleAddAlias = () => {
@@ -68,8 +77,8 @@ export default function ImageModal({
         <div className="p-6">
           <div className="mb-6 rounded-lg overflow-hidden bg-gray-100">
             <img
-              src={`http://localhost:8080${image.url}`}
-              alt={image.aliases.join(', ')}
+              src={api.getImageUrl(image.id, image.extension)}
+              alt={`Image ${image.id}`}
               className="w-full h-auto"
             />
           </div>
@@ -77,12 +86,15 @@ export default function ImageModal({
           <div className="space-y-4 mb-6">
             <div className="text-sm text-gray-600">
               <p>
+                <span className="font-medium">Image ID:</span> {image.id}
+              </p>
+              <p>
                 <span className="font-medium">Uploaded Time:</span>{' '}
-                {new Date(image.uploaded_at).toLocaleString()}
+                {new Date(image.uploadedAt * 1000).toLocaleString()}
               </p>
               <p>
                 <span className="font-medium">Uploaded By:</span>{' '}
-                {image.uploaded_user_id}
+                {image.uploadedUserId}
               </p>
             </div>
 

@@ -57,6 +57,10 @@ export default function UploadModal({ onClose, onUpload }: UploadModalProps) {
       alert('Please select a file');
       return;
     }
+    if (aliases.length === 0) {
+      alert('Please add at least one alias');
+      return;
+    }
     setIsUploading(true);
     try {
       await onUpload(file, aliases);
@@ -100,6 +104,7 @@ export default function UploadModal({ onClose, onUpload }: UploadModalProps) {
                   alt="Preview"
                   className="max-h-64 mx-auto rounded-lg"
                 />
+                {/* Red-Rounded "X" Button at Top-Right Corner of Image Window: Remove selected image and clear preview */}
                 <button
                   onClick={() => {
                     setFile(null);
@@ -166,6 +171,7 @@ export default function UploadModal({ onClose, onUpload }: UploadModalProps) {
             <div className="space-y-2">
               {aliases.map((alias) => (
                 <div key={alias} className="flex items-center gap-2">
+                  {/* Red "X" Button: Remove this alias from the list */}
                   <button
                     onClick={() => handleRemoveAlias(alias)}
                     className="text-red-600 hover:text-red-700"
@@ -193,6 +199,7 @@ export default function UploadModal({ onClose, onUpload }: UploadModalProps) {
                 </div>
               ))}
               <div className="flex items-center gap-2">
+                {/* Green "+" Button: Add new alias to the list */}
                 <button
                   onClick={handleAddAlias}
                   className="text-green-600 hover:text-green-700"
@@ -224,15 +231,17 @@ export default function UploadModal({ onClose, onUpload }: UploadModalProps) {
           </div>
 
           <div className="flex justify-end gap-2 pt-4 border-t border-gray-200">
+            {/* Cancel Button: Close modal without uploading */}
             <button
               onClick={onClose}
               className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors font-medium"
             >
               Cancel
             </button>
+            {/* Upload Button: Upload image with aliases to server */}
             <button
               onClick={handleUpload}
-              disabled={!file || isUploading}
+              disabled={!file || aliases.length === 0 || isUploading}
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50"
             >
               {isUploading ? 'Uploading...' : 'Upload'}

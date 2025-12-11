@@ -1,12 +1,12 @@
-export interface Image {
-  id: string;
-  uploaded_user_id: string;
-  uploaded_at: string;
-  aliases: string[];
-  url: string;
+export interface Alias {
+  id: number;
+  name: string;
 }
 
-export interface User {
-  id: string;
-  username: string;
+export interface Image {
+  id: number;
+  uploadedUserId: string;
+  uploadedAt: number;
+  aliasesIds: number[];
+  extension: string;
 }
