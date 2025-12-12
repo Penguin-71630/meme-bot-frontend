@@ -1,0 +1,14 @@
+---
+name: Build and release image
+on: [push]
+
+jobs:
+  release-image:
+    runs-on: imgbuilder
+    steps:
+      - name: Build and push image
+        uses: https://gitea.konchin.com/action/docker@main
+        with:
+          registry-certificate: ${{ vars.ROOTCA }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
