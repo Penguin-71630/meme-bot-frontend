@@ -18,12 +18,10 @@ export default function ImageModal({
   const [aliases, setAliases] = useState<string[]>([]);
   const [newAlias, setNewAlias] = useState('');
   const [isSaving, setIsSaving] = useState(false);
-  const [allAliases, setAllAliases] = useState<{id: number, name: string}[]>([]);
 
   useEffect(() => {
     // Load all aliases and map image's aliasesIds to names
     api.getAllAliases().then(allAliasesData => {
-      setAllAliases(allAliasesData);
       const aliasNames = image.aliasesIds
         .map(id => allAliasesData.find(a => a.id === id)?.name)
         .filter((name): name is string => name !== undefined);

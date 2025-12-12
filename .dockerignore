@@ -1,0 +1,15 @@
+webpage/node_modules
+webpage/npm-debug.log
+webpage/.DS_Store
+webpage/dist
+.git
+.gitignore
+webpage/.env
+webpage/.env.local
+webpage/.env.*.local
+webpage/coverage
+.vscode
+.idea
+*.log
+tests/
+api/

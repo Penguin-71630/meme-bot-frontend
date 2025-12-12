@@ -1,6 +1,7 @@
 .DS_Store
 
 tests/*
+frontend-web
 
 ################################
 # Node.js/React (web/) 專屬
