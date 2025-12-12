@@ -105,64 +105,36 @@ export default function ImageModal({
               <div className="space-y-2">
                 {aliases.map((alias) => (
                   <div key={alias} className="flex items-center gap-2">
-                    {(
-                      <button
-                        onClick={() => handleRemoveAlias(alias)}
-                        className="text-red-600 hover:text-red-700"
-                      >
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
-                      </button>
-                    )}
                     <input
                       type="text"
                       value={alias}
                       readOnly
                       className="flex-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-50"
                     />
+                    <button
+                      onClick={() => handleRemoveAlias(alias)}
+                      className="w-20 px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+                    >
+                      REMOVE
+                    </button>
                   </div>
                 ))}
-                {(
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={handleAddAlias}
-                      className="text-green-600 hover:text-green-700"
-                    >
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 4v16m8-8H4"
-                        />
-                      </svg>
-                    </button>
-                    <input
-                      type="text"
-                      placeholder="Add a new alias"
-                      value={newAlias}
-                      onChange={(e) => setNewAlias(e.target.value)}
-                      onKeyPress={(e) => e.key === 'Enter' && handleAddAlias()}
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                )}
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    placeholder="press Enter or click ADD to add alias"
+                    value={newAlias}
+                    onChange={(e) => setNewAlias(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && handleAddAlias()}
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <button
+                    onClick={handleAddAlias}
+                    className="w-20 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+                  >
+                    ADD
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -188,7 +160,7 @@ export default function ImageModal({
               {(
                 <button
                   onClick={handleSave}
-                  disabled={isSaving}
+                  disabled={isSaving || aliases.length === 0}
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50"
                 >
                   {isSaving ? 'Saving...' : 'Save'}

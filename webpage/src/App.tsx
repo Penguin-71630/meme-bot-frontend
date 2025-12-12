@@ -12,6 +12,7 @@ import type { Image, Alias } from './types';
 
 function App() {
   const [isLoginMode, setIsLoginMode] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(true);
   const [images, setImages] = useState<Image[]>([]);
   const [allAliases, setAllAliases] = useState<Alias[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -19,8 +20,6 @@ function App() {
   const [selectedImage, setSelectedImage] = useState<Image | null>(null);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [loading, setLoading] = useState(true);
-
-  console.log("Hello");
 
   // Check if URL has a login token
   useEffect(() => {
@@ -36,22 +35,26 @@ function App() {
           window.history.replaceState({}, document.title, '/');
           // Exit login mode and load data
           setIsLoginMode(false);
+          setIsInitializing(false);
           loadData();
         })
         .catch((error) => {
           console.error("Login failed:", error);
-          setIsLoginMode(true); // Show login page on error
+          setIsLoginMode(true);
+          setIsInitializing(false);
         });
     } else {
+      setIsInitializing(false);
       loadData();
     }
   }, []);
 
   useEffect(() => {
-    if (!isLoginMode) {
+    // Don't load data during initial mount when login is in progress
+    if (!isLoginMode && !isInitializing) {
       loadData();
     }
-  }, [searchQuery, isLoginMode]);
+  }, [searchQuery, isLoginMode, isInitializing]);
 
   useEffect(() => {
     // Reset to page 1 when search query changes
@@ -105,6 +108,8 @@ function App() {
   const handleDeleteImage = async (imageId: number) => {
     await api.deleteImage(imageId);
     await loadData();
+    // After deletion, check if current page is still valid
+    // This will be handled by the useEffect below
   };
 
   // Show login page if in login mode
@@ -121,6 +126,14 @@ function App() {
 
   // Pagination calculations
   const totalPages = Math.max(1, Math.ceil(filteredAliases.length / ALIASES_PER_PAGE));
+  
+  // Adjust current page if it's now out of bounds
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(Math.max(1, totalPages));
+    }
+  }, [totalPages, currentPage]);
+  
   const startIndex = (currentPage - 1) * ALIASES_PER_PAGE;
   const endIndex = startIndex + ALIASES_PER_PAGE;
   const currentPageAliases = filteredAliases.slice(startIndex, endIndex);

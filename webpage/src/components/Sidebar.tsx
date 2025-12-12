@@ -24,10 +24,10 @@ export default function Sidebar({
           </div>
         </div>
         <ul className="space-y-1">
-          {aliases.map((alias) => (
+          {aliases.map((alias, index) => (
             <li key={alias.id}>
               <div className="w-full text-left px-3 py-2 rounded-lg bg-blue-50 text-blue-700">
-                <span className="text-xs text-blue-500 mr-2">#{alias.id}</span>
+                <span className="text-xs text-blue-500 mr-2">#{index + 1}</span>
                 {alias.name}
               </div>
             </li>

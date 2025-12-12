@@ -8,19 +8,23 @@ interface ImageGridProps {
 }
 
 export default function ImageGrid({ images, aliases, onImageClick }: ImageGridProps) {
-  // Create a map of alias ID to alias name
+  // Create a map of alias ID to alias name for current page aliases only
   const aliasMap = new Map(aliases.map(a => [a.id, a.name]));
+  const currentPageAliasIds = new Set(aliases.map(a => a.id));
   
-  // Group images by alias
+  // Group images by alias, but only for aliases on the current page
   const groupedImages = images.reduce((acc, image) => {
     if (image.aliasesIds.length === 0) {
       if (!acc['__no_alias__']) acc['__no_alias__'] = [];
       acc['__no_alias__'].push(image);
     } else {
+      // Only process aliases that are on the current page
       image.aliasesIds.forEach((aliasId) => {
-        const aliasName = aliasMap.get(aliasId) || `Alias #${aliasId}`;
-        if (!acc[aliasName]) acc[aliasName] = [];
-        acc[aliasName].push(image);
+        if (currentPageAliasIds.has(aliasId)) {
+          const aliasName = aliasMap.get(aliasId) || `Alias #${aliasId}`;
+          if (!acc[aliasName]) acc[aliasName] = [];
+          acc[aliasName].push(image);
+        }
       });
     }
     return acc;

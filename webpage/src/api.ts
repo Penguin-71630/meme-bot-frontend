@@ -3,7 +3,7 @@ import type { Image, Alias } from './types';
 const API_BASE_URL = 'http://localhost:8080';
 
 // Pagination configuration
-export const ALIASES_PER_PAGE = 5; // Number of aliases to show per page
+export const ALIASES_PER_PAGE = 10; // Number of aliases to show per page
 
 class ApiService {
   // Authentication
@@ -111,6 +111,8 @@ class ApiService {
   // PUT /api/image/{id}/aliases
   // Body: {aliases: string[]}
   async updateImageAliases(id: number, aliasNames: string[]): Promise<void> {
+    console.log("Update aliases of image ", id);
+    console.log("Alias names: ", aliasNames);
     const response = await fetch(`${API_BASE_URL}/api/image/${id}/aliases`, {
       method: 'PUT',
       headers: {
