@@ -1,6 +1,8 @@
 // src/pages/Login.tsx
 import { useEffect, useState } from 'react';
 
+const API_BASE_URL = import.meta.env.EXTERNAL_URL || 'http://localhost:8080';
+
 interface LoginProps {
   onLoginSuccess: () => void;
 }
@@ -20,7 +22,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
     }
 
     // Call backend login endpoint
-    fetch('http://localhost:8080/auth/login', {
+    fetch(`${API_BASE_URL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

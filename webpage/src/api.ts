@@ -1,6 +1,6 @@
 import type { Image, Alias } from './types';
 
-const API_BASE_URL = 'http://localhost:8080';
+const API_BASE_URL = import.meta.env.EXTERNAL_URL || 'http://localhost:8080';
 
 // Pagination configuration
 export const ALIASES_PER_PAGE = 10; // Number of aliases to show per page
