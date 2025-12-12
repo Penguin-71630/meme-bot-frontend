@@ -1,6 +1,45 @@
 # Webpage for Memebot
 
 
+## Update the filtering policy of the search bar
+
+The current filtering policy is:
+```ts
+// Filter aliases based on search
+const filteredAliases = searchQuery
+? allAliases.filter(alias =>
+    alias.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+: allAliases;
+```
+
+Please update the policy from "filter by substring" to "filter by subarray".
+
+Suppose "cd" is the current search query, the following examples are matched results:
+- "abcde" (matched)
+- "cwwwwd" (not a match originally)
+
+The following examples are not matched:
+- "adce" (not a match originally)
+- "dwwwwc" (not a match originally)
+
+The implementation logic may should be O(sum of length of all aliases + length of search query) and should break the loop of checking a single alias as soon as that alias is marked as "matched".
+
+<!-- The current implementation could be slightly improved by:
+1. Not using toLowerCase() for text and query initially
+2. Instead, scan the text and query character by character, and break the loop as soon as the queryIndex equals lowerQuery.length
+ -->
+
+
+
+
+## Don't redirect 401 to home page
+
+Modify the login mechanism such that:
+- When invalid token is provided upon entering the webpage by web browser, show a popup message "login error" and do not redirect to home page (even not load elements of the webpage).
+- Do not use alert() to show "login error", instead, use a React component to show "login error".
+
+
 
 ## Modify the uploadmodal's and imagemodal's alias adding/removing mechanism
 

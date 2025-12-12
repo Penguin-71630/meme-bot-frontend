@@ -30,7 +30,10 @@ export default function ImageGrid({ images, aliases, onImageClick }: ImageGridPr
     return acc;
   }, {} as Record<string, Image[]>);
 
-  const filteredGroups = Object.entries(groupedImages);
+  // Maintain the same order as the aliases prop
+  const filteredGroups = aliases
+    .map(alias => [alias.name, groupedImages[alias.name]] as [string, Image[]])
+    .filter(([_, imgs]) => imgs && imgs.length > 0);
 
   return (
     <div className="p-6 space-y-8">

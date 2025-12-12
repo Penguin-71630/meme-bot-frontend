@@ -1,6 +1,60 @@
 # Bug Report File
 
 
+## 2025/12/13 02:20
+
+Another slight issue occured: After I change the only alias of an image from "1" to "huh", the aliases listed at side bar and main page are not in the same order.
+- Side bar: "宅斃了", "huh"
+- Main page: "huh", "宅斃了"
+
+
+## 2025/12/13 02:18
+
+Seems there are some rendering errors that makes the home page not loading correctly:
+```
+Access token:  GZ9aUgchr8gJAT5xwmj-s6eS
+api.ts:11 Hello, someone is trying to access the web page.
+api.ts:12 Token:  GZ9aUgchr8gJAT5xwmj-s6eS
+installHook.js:1 Access token:  GZ9aUgchr8gJAT5xwmj-s6eS
+installHook.js:1 Hello, someone is trying to access the web page.
+installHook.js:1 Token:  GZ9aUgchr8gJAT5xwmj-s6eS
+api.ts:26 Login successful
+App.tsx:36 Login successful
+api.ts:26 Login successful
+App.tsx:36 Login successful
+installHook.js:1 React has detected a change in the order of Hooks called by App. This will lead to bugs and errors if not fixed. For more information, read the Rules of Hooks: https://react.dev/link/rules-of-hooks
+
+   Previous render            Next render
+   ------------------------------------------------------
+1. useState                   useState
+2. useState                   useState
+3. useState                   useState
+4. useState                   useState
+5. useState                   useState
+6. useState                   useState
+7. useState                   useState
+8. useState                   useState
+9. useState                   useState
+10. useState                  useState
+11. useState                  useState
+12. useEffect                 useEffect
+13. useEffect                 useEffect
+14. useCallback               useCallback
+15. useEffect                 useEffect
+16. undefined                 useEffect
+   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+react-dom_client.js?v=80307a6a:5790 Uncaught Error: Rendered more hooks than during the previous render.
+    at App (App.tsx:159:3)
+installHook.js:1 An error occurred in the <App> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+overrideMethod	@	installHook.js:1
+```
+
+
+
+
 ## 2025/12/13 00:33
 
 Trying to delete an alias from a image, but got error "500 Internal Server Error". 
