@@ -1,7 +1,7 @@
 // src/pages/Login.tsx
 import { useEffect, useState } from 'react';
 
-const API_BASE_URL = import.meta.env.EXTERNAL_URL || 'http://localhost:8080';
+const API_BASE_URL = import.meta.env.VITE_EXTERNAL_URL;
 
 interface LoginProps {
   onLoginSuccess: () => void;

@@ -1,6 +1,6 @@
 import type { Image, Alias } from './types';
 
-const API_BASE_URL = import.meta.env.EXTERNAL_URL || 'http://localhost:8080';
+const API_BASE_URL = import.meta.env.VITE_EXTERNAL_URL;
 
 // Pagination configuration
 export const ALIASES_PER_PAGE = 10; // Number of aliases to show per page
@@ -8,6 +8,7 @@ export const ALIASES_PER_PAGE = 10; // Number of aliases to show per page
 class ApiService {
   // Authentication
   async login(token: string): Promise<void> {
+    console.log(`where is my fucking url: ${API_BASE_URL}`)
     console.log("Hello, someone is trying to access the web page.");
     console.log("Token: ", token);
     const response = await fetch(`${API_BASE_URL}/auth/login`, {
